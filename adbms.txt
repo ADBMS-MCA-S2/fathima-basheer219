@@ -1,0 +1,266 @@
+use movies
+db.createCollection("movie")
+> db.movie.insert({"title":"flight club","writer":"chuck palahniuk","year":1999,"actors":["brad pitt","edward norton"]})
+WriteResult({ "nInserted" : 1 })
+> db.movie.insert({"title":"pulp fiction","writer":"quentin tarantino","year":1994,"actors":["john travolta","uma thurman"]})
+WriteResult({ "nInserted" : 1 })
+> db.movie.insert({"title":"inglorious basterds","writer":"quentin tarantino","year":2009,"actors":["brad pitt","diane kruger","eli roth"]})
+WriteResult({ "nInserted" : 1 })
+> db.movie.insert({"title":"the hobbit an unexpected journey","writer":"j.r.r.tolkein","year":2012,"franchise":"the hobbit"})
+WriteResult({ "nInserted" : 1 })
+> db.movie.insert({"title":"the hobbit the destination of smaug","writer":"j.r.r.tolkein","year":2013,"franchise":"the hobbit"})
+WriteResult({ "nInserted" : 1 })
+> db.movie.insert({"title":"the hobbit the battle of the five armies","writer":"j.r.r.tolkein","year":2012,"franchise":"the hobbit","synopsis":"bilbo and company are forced to engage in a war against an array of combatants and keep the lonely mountain from falling into the hands of a rising darkness"})
+WriteResult({ "nInserted" : 1 })
+> db.movie.insert({"title":"pee wee herman's big adventure"})
+WriteResult({ "nInserted" : 1 })
+> db.movie.insert({"title":"avatar"})
+WriteResult({ "nInserted" : 1 })
+
+Question 1:
+> db.movie.find().pretty();
+
+//output
+ "_id" : ObjectId("62a8133ff91bb84691c23e6a"),
+        "title" : "flight club",
+        "writer" : "chuck palahniuk",
+        "year" : 1999,
+        "actors" : [
+                "brad pitt",
+                "edward norton"
+        ]
+}
+{
+        "_id" : ObjectId("62a81399f91bb84691c23e6b"),
+        "title" : "pulp fiction",
+        "writer" : "quentin tarantino",
+        "year" : 1994,
+        "actors" : [
+                "john travolta",
+                "uma thurman"
+        ]
+}
+{
+        "_id" : ObjectId("62a813e4f91bb84691c23e6c"),
+        "title" : "inglorious basterds",
+        "writer" : "quentin tarantino",
+        "year" : 2009,
+        "actors" : [
+                "brad pitt",
+                "diane kruger",
+                "eli roth"
+        ]
+}
+{
+        "_id" : ObjectId("62a81452f91bb84691c23e6d"),
+        "title" : "the hobbit an unexpected journey",
+        "writer" : "j.r.r.tolkein",
+        "year" : 2012,
+        "franchise" : "the hobbit"
+}
+{
+        "_id" : ObjectId("62a8147af91bb84691c23e6e"),
+        "title" : "the hobbit the destination of smaug",
+        "writer" : "j.r.r.tolkein",
+        "year" : 2013,
+        "franchise" : "the hobbit"
+}
+{
+        "_id" : ObjectId("62a81501f91bb84691c23e6f"),
+        "title" : "the hobbit the battle of the five armies",
+        "writer" : "j.r.r.tolkein",
+        "year" : 2012,
+        "franchise" : "the hobbit",
+        "synopsis" : "bilbo and company are forced to engage in a war against an array of combatants and keep the lonely mountain from falling into the hands of a rising darkness"
+}
+{
+        "_id" : ObjectId("62a8152cf91bb84691c23e70"),
+        "title" : "pee wee herman's big adventure"
+
+Question 2:
+ db.movie.find({"writer":"quentin tarantino"}).pretty();
+
+//output
+ "_id" : ObjectId("62a81399f91bb84691c23e6b"),
+        "title" : "pulp fiction",
+        "writer" : "quentin tarantino",
+        "year" : 1994,
+        "actors" : [
+                "john travolta",
+                "uma thurman"
+        ]
+}
+{
+        "_id" : ObjectId("62a813e4f91bb84691c23e6c"),
+        "title" : "inglorious basterds",
+        "writer" : "quentin tarantino",
+        "year" : 2009,
+        "actors" : [
+                "brad pitt",
+                "diane kruger",
+                "eli roth"
+        ]
+
+question 3:
+ db.movie.find({"actors":"brad pitt"}).pretty();
+
+ //output
+
+        "_id" : ObjectId("62a8133ff91bb84691c23e6a"),
+        "title" : "flight club",
+        "writer" : "chuck palahniuk",
+        "year" : 1999,
+        "actors" : [
+                "brad pitt",
+                "edward norton"
+        ]
+}
+{
+        "_id" : ObjectId("62a813e4f91bb84691c23e6c"),
+        "title" : "inglorious basterds",
+        "writer" : "quentin tarantino",
+        "year" : 2009,
+        "actors" : [
+                "brad pitt",
+                "diane kruger",
+                "eli roth"
+        ]
+
+question 4:
+
+> db.movie.find({$and: [{year:{$gt:1990}},{year:{$lt:2000}}]},{title:1,_id:0}).pretty();
+
+//output
+
+ "title" : "flight club" }
+{ "title" : "pulp fiction" }
+
+question 5:
+
+ db.movie.find({$or: [{year:{$gt:2010}},{year:{$lt:2000}}]},{title:1,_id:0}).pretty();
+
+//output
+
+ "title" : "flight club" }
+{ "title" : "pulp fiction" }
+{ "title" : "the hobbit an unexpected journey" }
+{ "title" : "the hobbit the destination of smaug" }
+{ "title" : "the hobbit the battle of the five armies" }
+
+question 6:
+ db.movie.updateOne({title:"the hobbit the destination of smaug"},{$addToSet:{"synopsis":"the dwarves,along with bilbo baggins and gandalf the grey,continue their quest to reclaim erebor,their homeland,from smaug.bilbo baggins is in possion of a mysterious and magical ring"}})
+
+
+ db.movie.find({title:"the hobbit the destination of smaug"}).pretty()
+
+//output
+
+ "_id" : ObjectId("62a8147af91bb84691c23e6e"),
+        "title" : "the hobbit the destination of smaug",
+        "writer" : "j.r.r.tolkein",
+        "year" : 2013,
+        "franchise" : "the hobbit",
+        "synopsis" : [
+                "the dwarves,along with bilbo baggins and gandalf the grey,continue their quest to reclaim erebor,their homeland,from smaug.bilbo baggins is in possion of a mysterious and magical ring"
+        ]
+
+question 7:
+ db.movie.updateOne({title:"pulp fiction"},{$addToSet:{"actors":"samuel l.jackson"}})
+
+ db.movie.find({title:"pulp fiction"}).pretty()
+
+//output
+
+
+        "_id" : ObjectId("62a81399f91bb84691c23e6b"),
+        "title" : "pulp fiction",
+        "writer" : "quentin tarantino",
+        "year" : 1994,
+        "actors" : [
+                "john travolta",
+                "uma thurman",
+                "samuel l.jackson"
+        ]
+
+question 8:
+db.movie.find({"synopsis":{$regex:"bilbo"}},{"title":1})
+
+//output
+{ "_id" : ObjectId("62a8147af91bb84691c23e6e"), "title" : "the hobbit the destination of smaug" }
+{ "_id" : ObjectId("62a81501f91bb84691c23e6f"), "title" : "the hobbit the battle of the five armies" }
+
+question 9:
+
+
+//output
+
+
+question 10:
+
+//output
+
+question 12:
+> db.movie.deleteMany({"title":"pee wee herman's big adventure"})
+
+ db.movie.find().pretty();
+//output
+
+
+        "_id" : ObjectId("62a8133ff91bb84691c23e6a"),
+        "title" : "flight club",
+        "writer" : "chuck palahniuk",
+        "year" : 1999,
+        "actors" : [
+                "brad pitt",
+                "edward norton"
+        ]
+}
+{
+        "_id" : ObjectId("62a81399f91bb84691c23e6b"),
+        "title" : "pulp fiction",
+        "writer" : "quentin tarantino",
+        "year" : 1994,
+        "actors" : [
+                "john travolta",
+                "uma thurman",
+                "samuel l.jackson"
+        ]
+}
+{
+        "_id" : ObjectId("62a813e4f91bb84691c23e6c"),
+        "title" : "inglorious basterds",
+        "writer" : "quentin tarantino",
+        "year" : 2009,
+        "actors" : [
+                "brad pitt",
+                "diane kruger",
+                "eli roth"
+        ]
+}
+{
+        "_id" : ObjectId("62a81452f91bb84691c23e6d"),
+        "title" : "the hobbit an unexpected journey",
+        "writer" : "j.r.r.tolkein",
+        "year" : 2012,
+        "franchise" : "the hobbit"
+}
+{
+        "_id" : ObjectId("62a8147af91bb84691c23e6e"),
+        "title" : "the hobbit the destination of smaug",
+        "writer" : "j.r.r.tolkein",
+        "year" : 2013,
+        "franchise" : "the hobbit",
+        "synopsis" : [
+                "the dwarves,along with bilbo baggins and gandalf the grey,continue their quest to reclaim erebor,their homeland,from smaug.bilbo baggins is in possion of a mysterious and magical ring"
+        ]
+}
+{
+        "_id" : ObjectId("62a81501f91bb84691c23e6f"),
+        "title" : "the hobbit the battle of the five armies",
+        "writer" : "j.r.r.tolkein",
+        "year" : 2012,
+        "franchise" : "the hobbit",
+        "synopsis" : "bilbo and company are forced to engage in a war against an array of combatants and keep the lonely mountain from falling into the hands of a rising darkness"
+}
+{ "_id" : ObjectId("62a81537f91bb84691c23e71"), "title" : "avatar" }
+>
