@@ -1,0 +1,50 @@
+create database exam;
+
+create table Student(rollno integer(15) primary key,name varchar(50),address text,totalmarks
+integer(15));
+
+
+create table Admission(rollno integer(15),cid integer(15),sem integer(20),primary key(rollno,cid),foreign
+key(rollno) references Student(rollno) ON delete cascade,foreign key(cid) references Cource(cid) ON
+delete cascade);
+
+
+create table Cource(cid integer(15) primary key,courcename varchar(50),fees integer(15));
+
+
+insert into Student values(101,"farhana","kollam",56),(102,"Don","
+kollam",60),(103,"faiha","tvm",15),(104,"Binoy","kollam",40),(105,"Arun","idukki",50);
+
+
+
+
+select * from Student;
+
+
+insert into Cource values(55,"MCA",55600),(66,"btech",44500);
+
+
+
+select * from Cource;
+
+
+insert into Admission values(101,55,1),(102,55,2),(103,66,2),(104,66,2),(105,55,2);
+
+
+select * from Admission;
+
+answer 3:
+
+create view mca As select * from Student where rollno in(select rollno from Admission where cid in
+(select cid from Cource where courcename="MCA"));
+
+select * from mca;
+
+answer 4:
+
+select sum(fees) from Cource where cid in(select cid from Admission where rollno=105) ;
+
+answer 5:
+
+select Cource.courcename,count(Admission.rollno) from Cource join Admission ON
+Cource.cid=Admission.cid group by Admission.cid;
